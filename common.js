@@ -12,13 +12,25 @@ const biggerThanThree = function (x) {
     }
 }
 
+const smallerThanTwenty = function (x) {
+    if (x  < 20) {
+        return true;
+    }
+}
+
+const biggerThanTwenty = function (x) {
+    if (x  > 20) {
+        return true;
+    }
+}
+
 const smallerOrEqualToThree = function (x) {
     if (x  <= 3) {
         return true;
     }
 }
 
-const numbers = [-5, -3, , 1, 5, 6, 7, 6, 2, 0,];
+const numbers = [-5, -3, , 1, 5, 6, 7, 6, 2, 0];
 const emptyArray = [];
 
 Array.prototype.push = function() {
@@ -33,4 +45,13 @@ Array.prototype.push = function() {
     return this.length;
 };
 
-module.exports =  { sum, sub, biggerThanThree, smallerOrEqualToThree, numbers, emptyArray }
+module.exports =  {
+    sum, 
+    sub, 
+    biggerThanThree, 
+    smallerOrEqualToThree, 
+    smallerThanTwenty,
+    biggerThanTwenty,
+    numbers, 
+    emptyArray 
+}
