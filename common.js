@@ -30,8 +30,12 @@ const smallerOrEqualToThree = function (x) {
     }
 }
 
+
+const duplicate = (a) =>  2 * a ;
 const numbers = [-5, -3, , 1, 5, 6, 7, 6, 2, 0];
 const emptyArray = [];
+
+
 
 Array.prototype.push = function() {
 
@@ -45,6 +49,8 @@ Array.prototype.push = function() {
     return this.length;
 };
 
+
+
 module.exports =  {
     sum, 
     sub, 
@@ -52,6 +58,7 @@ module.exports =  {
     smallerOrEqualToThree, 
     smallerThanTwenty,
     biggerThanTwenty,
+    duplicate,
     numbers, 
     emptyArray 
 }

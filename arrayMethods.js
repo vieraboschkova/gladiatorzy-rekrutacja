@@ -6,37 +6,63 @@
 // - array.filter
 // - array.map
 
+// import the test items
+
 const common = require('./common')
+
+/* implement custom array.some */
 
 function customArraySome (arr, callback) {
     if (arr.length === 0) {
         return true;
     }
     return arr.reduce((accumulator, currentValue, index, array) => {
-        // console.log('going');
         if (callback(currentValue)) {
             array.splice(1);
-            // console.log('finished')
             return true;
         }
         return false;
     });
 }
 
+// based on mdn solution for map with reduce
+Array.prototype.someUsingReduce = function(callback, thisArg) {
+    return this.reduce(function(accumulator, currentValue, index, array) {
+        if (callback.call(thisArg, currentValue, index, array)) {
+            array.splice(1);
+            return true;
+        }
+        return false;
+    }, []);
+}
+
+/* implement custom array.every */
+
 function customArrayEvery (arr, callback) {
     if (arr.length === 0) {
         return true;
     }
     return arr.reduce((accumulator, currentValue, index, array) => {
-        // console.log('going')
         if (!callback(currentValue)) {
             array.splice(1);
-            // console.log('finished')
             return false;
         }
         return true;
     });
 }
+
+// based on mdn solution for map with reduce
+Array.prototype.everyUsingReduce = function(callback, thisArg) {
+    return this.reduce(function(accumulator, currentValue, index, array) {
+        if (!callback.call(thisArg, currentValue, index, array)) {
+            array.splice(1);
+            return false;
+        }
+        return true;
+    }, []);
+}
+
+/* implement custom array.filter */
 
 function customArrayFilter(arr, callback) {
     if (arr.length === 0) {
@@ -44,21 +70,30 @@ function customArrayFilter(arr, callback) {
     }
     return arr.reduce((accumulator, currentValue, index, array) => {
         if (callback(currentValue)) {
-            // accumulator.push(currentValue); 
             return [...accumulator, currentValue];
         }
-        // console.log(accumulator);
         return accumulator;
     }, []);
 };
 
+// based on mdn
+
+Array.prototype.filterUsingReduce = function(callback, thisArg) {
+    return this.reduce(function(accumulator, currentValue, index, array) {
+        if (callback.call(thisArg, currentValue, index, array)) {
+            return [...accumulator, currentValue];
+        }
+        return accumulator;
+    }, []);
+}
+
+/* implement custom array.map */
 // doesnt work if there are empty slots since reduce omits them
 function customArrayMap(arr, callback) {
     console.log(arr.length, arr)
     if (arr.length === 0) {
         return [];
     }
-
     return arr.reduce((accumulator, currentValue, index, array) => {
         return [...accumulator, (callback(currentValue, index, array))]
     }, [])
@@ -82,12 +117,14 @@ let testedValue =
     // customArrayEvery(common.numbers, common.smallerOrEqualToThree)
     // customArrayEvery(common.emptyArray, common.biggerThanThree)
     // customArraySome(common.numbers, common.smallerOrEqualToThree)
-    customArraySome(common.numbers, common.biggerThanTwenty)
+    // customArraySome(common.numbers, common.biggerThanTwenty)
+    // common.numbers.filterUsingReduce(common.biggerThanThree)
+    // common.numbers.someUsingReduce(common.biggerThanThree)
+    // common.numbers.someUsingReduce(common.biggerThanTwenty)
+    // common.numbers.everyUsingReduce(common.smallerOrEqualToThree)
+    // common.numbers.everyUsingReduce(common.smallerThanTwenty)
+    // common.emptyArray.everyUsingReduce(common.smallerThanTwenty)
+    // common.numbers.mapUsingReduce(common.duplicate)
+    // common.emptyArray.mapUsingReduce(common.duplicate)
 
 console.log(testedValue);
-
-// console.log(
-//     customArrayMap(common.emptyArray, ((a) => a * 2 )), 
-//     customArrayMap(common.numbers, ((a) => a * 2 )),
-//     common.numbers.mapUsingReduce((a) => a * 2)
-// )
