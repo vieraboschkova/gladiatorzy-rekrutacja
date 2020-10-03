@@ -30,26 +30,16 @@ const smallerOrEqualToThree = function (x) {
     }
 }
 
+function square(n) {
+    return n * n;
+}
 
 const duplicate = (a) =>  2 * a ;
 const numbers = [-5, -3, , 1, 5, 6, 7, 6, 2, 0];
+const mixed = [ -1, 0, 1, '', true, null, NaN, undefined, {a:2, b:3}]
 const emptyArray = [];
 
-
-
-Array.prototype.push = function() {
-
-    // Use loop for multiple/any no. of elements
-    for (var i = 0; i < arguments.length; i++) {
-        this[this.length] = arguments[i];
-    }
-
-
-    // Return new length of the array
-    return this.length;
-};
-
-
+const falsies = [ false, null, undefined, 0, -0, 0n, NaN, '' ];
 
 module.exports =  {
     sum, 
@@ -59,6 +49,9 @@ module.exports =  {
     smallerThanTwenty,
     biggerThanTwenty,
     duplicate,
+    square,
     numbers, 
-    emptyArray 
+    emptyArray,
+    mixed,
+    falsies 
 }
