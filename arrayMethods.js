@@ -54,11 +54,54 @@ function filterFn(array, callback){
 
 /* **** REDUCE **** */
 
-function reduceFn(array, callback, initial){}
+function reduceFn(array, callback, initial){
+    if (!Array.isArray(array)) {
+        throw new TypeError('not a valid array');
+    } else if (array.length === 0 && !initial) {
+        throw new TypeError('Reduce of empty array with no initial value');
+    } else {
+        const newArray = array.slice(0);
+        if (initial) {
+            newArray.unshift(initial);
+        }
+        let value = newArray[0];
+        if (newArray.length === 1) {
+            return value;
+        }
+        for (let i = 1; i < newArray.length; i += 1) {
+            if (i in newArray){
+                value = callback(value, newArray[i], i, newArray);
+            }
+        }
+        return value;
+    }
+}
 
 /* **** REDUCERIGHT **** */
 
-function reduceRightFn(array, callback, initial){}
+function reduceRightFn(array, callback, initial){
+    if (!Array.isArray(array)) {
+        throw new TypeError('not a valid array');
+    } else if (array.length === 0 && !initial) {
+        throw new TypeError('Reduce of empty array with no initial value');
+    } else {
+        const newArray = array.slice(0);
+        if (initial) {
+            newArray.push(initial);
+        }
+        let value = newArray[newArray.length - 1];
+        if (newArray.length === 1) {
+            return value;
+        }
+        for (let i = newArray.length - 2; i > -1; i -= 1) {
+            console.log(newArray[i])
+            if (i in newArray){
+                value = callback(value, newArray[i], i, newArray);
+            }
+        }
+        return value;
+    }
+}
 
 /* **** EVERY **** */
 
@@ -108,13 +151,17 @@ function someFn(array, callback){
 /* **** ENTRIES **** */
 
 function entriesFn(array){
-    let newArray = new Array(array.length);
-    const keys = [...array.keys()];
-    const values = [...array.values()];
-    for (i in keys) {
-        newArray[i] = [keys[i], values[i]];
+    if (!Array.isArray(array)) {
+        throw new TypeError('not a valid array');
+    } else {
+        let newArray = new Array(array.length);
+        const keys = [...array.keys()];
+        const values = [...array.values()];
+        for (i in keys) {
+            newArray[i] = [keys[i], values[i]];
+        }
+        return newArray;
     }
-    return newArray;
 }
 
 
@@ -142,7 +189,25 @@ const testedValue =
     // entriesFn(common.numbers)
     // entriesFn(common.emptyArray)
     // entriesFn(common.mixed)
-    entriesFn(common.falsies)
+    // entriesFn(common.falsies)
+    // reduceFn(common.numbers, common.sum, 100)
+    // reduceFn(common.numbers, common.sum)
+    // reduceFn(common.emptyArray, common.sum, 100)
+    // reduceFn(common.emptyArray, common.sum)
+    // reduceFn(common.mixed, common.sum)
+    // reduceFn([ -1, 0, 1], common.sum)
+    // reduceFn(common.falsies, common.sub)
+    // reduceFn(common.alphanumeric, common.square)
+    // reduceFn(['oh'], common.sum)
+        // reduceRightFn(common.numbers, common.sum, 100)
+    // reduceRightFn(common.numbers, common.sum)
+    // reduceRightFn(common.emptyArray, common.sum, 100)
+    // reduceRightFn(common.emptyArray, common.sum)
+    // reduceRightFn(common.mixed, common.sum)
+    // reduceRightFn([ -1, 0, 1], common.sum)
+    // reduceRightFn(common.falsies, common.sub)
+    // reduceRightFn(common.alphanumeric, common.square)
+    reduceRightFn(['oh'], common.sum)
 
 const desiredValue = 
     // common.numbers.map(duplicate);
@@ -163,18 +228,36 @@ const desiredValue =
     // common.numbers.entries()
     // common.emptyArray.entries()
     // common.mixed.entries()
-    common.falsies.entries()
+    // common.falsies.entries()
+    // common.numbers.reduce(common.sum, 100)
+    // common.numbers.reduce(common.sum)
+    // common.emptyArray.reduce(common.sum)
+    // common.emptyArray.reduce(common.sum, 100)
+    // common.mixed.reduce(common.sum)
+    // common.falsies.reduce(common.sub)
+    // [ -1, 0, 1].reduce(common.sum)
+    // common.alphanumeric.reduce(common.square)
+    // ['oh'].reduce(common.sum)
+    // common.numbers.reduceRight(common.sum, 100)
+    // common.numbers.reduceRight(common.sum)
+    // common.emptyArray.reduceRight(common.sum, 100)
+    // common.emptyArray.reduceRight(common.sum)
+    // common.mixed.reduceRight(common.sum)
+    // common.falsies.reduceRight(common.sub)
+    // [ -1, 0, 1].reduceRight(common.sum)
+    // common.alphanumeric.reduceRight(common.square)
+    ['oh'].reduceRight(common.sum)
 
 
-// console.log('TESTED: ' + testedValue);
-// console.log('SHOULD BE: ' + desiredValue);
-// console.log('TESTED: ' + typeof testedValue);
-// console.log('SHOULD BE: ' + typeof desiredValue);
+console.log('TESTED: ' + testedValue);
+console.log('SHOULD BE: ' + desiredValue);
+console.log('TESTED: ' + typeof testedValue);
+console.log('SHOULD BE: ' + typeof desiredValue);
 
-for (let e of testedValue) {
-    console.log('TESTED: ' +  e);
-}
+// for (let e of testedValue) {
+//     console.log('TESTED: ' +  e);
+// }
 
-for (let e of desiredValue) {
-    console.log('SHOULD BE: ' +  e);
-}
+// for (let e of desiredValue) {
+//     console.log('SHOULD BE: ' + e)
+// }

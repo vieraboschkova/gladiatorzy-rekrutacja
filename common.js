@@ -47,6 +47,7 @@ const duplicate = (a) =>  2 * a ;
 const numbers = [-5, -3, , 1, 5, 6, 7, 6, 2, 0];
 const mixed = [ -1, 0, 1, '', true, null, NaN, undefined, {a:2, b:3}]
 const emptyArray = [];
+const alphanumeric = [ 10, 2, 3, , 'a', 'b', 'c', 10, 2, 3]
 
 const falsies = [ false, null, undefined, 0, -0, 0n, NaN, '' ];
 
@@ -63,5 +64,6 @@ module.exports =  {
     numbers, 
     emptyArray,
     mixed,
-    falsies 
+    falsies,
+    alphanumeric 
 }
