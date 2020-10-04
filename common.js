@@ -34,6 +34,15 @@ function square(n) {
     return n * n;
 }
 
+function hasEmptyElement(array){
+    for (var i=0; i<array.length; i++){
+        if (!(i in array)) {
+            return true;
+        }
+    }
+    return false;
+}
+
 const duplicate = (a) =>  2 * a ;
 const numbers = [-5, -3, , 1, 5, 6, 7, 6, 2, 0];
 const mixed = [ -1, 0, 1, '', true, null, NaN, undefined, {a:2, b:3}]
@@ -50,6 +59,7 @@ module.exports =  {
     biggerThanTwenty,
     duplicate,
     square,
+    hasEmptyElement,
     numbers, 
     emptyArray,
     mixed,
