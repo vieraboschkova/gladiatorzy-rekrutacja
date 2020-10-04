@@ -20,12 +20,10 @@ const common = require('./common')
 // changes empty slot to NaN
 function mapFn(arr, callback){
     const newArraysLength = 0;
-
     if (arr === null) {
         newArraysLength = 0;
     } else { newArraysLength === arr.length }
     const mappedArray = new Array(newArraysLength);
-
     if (!Array.isArray(arr)) {
         throw new TypeError('not a valid array');
     } else {
@@ -94,7 +92,6 @@ function reduceRightFn(array, callback, initial){
             return value;
         }
         for (let i = newArray.length - 2; i > -1; i -= 1) {
-            console.log(newArray[i])
             if (i in newArray){
                 value = callback(value, newArray[i], i, newArray);
             }
@@ -111,18 +108,13 @@ function everyFn(array, callback) {
         throw new TypeError('not a valid array');
     } else {
         for (let i = 0; i < array.length; i += 1) {
-            console.log('iterating: ' + i)
             if (!(i in array)) {
-                console.log('was empty');
             } else if(!callback(array[i])) {
-                console.log (callback(array[i]))
                 isEvery = false;
-                console.log(isEvery + 'was here')
                 i = array.length - 1;
             }
         }
     }
-    console.log(isEvery)
     return isEvery;
 }
 
@@ -134,17 +126,13 @@ function someFn(array, callback){
         throw new TypeError('not a valid array');
     } else {
         for (let i = 0; i < array.length; i += 1) {
-            console.log('iterating: ' + i)
             if (!(i in array)) {
-                console.log('was empty');
             } else if(callback(array[i])) {
                 hasSome = true;
-                console.log(hasSome + 'was here')
                 i = array.length - 1;
             }
         }
     }
-    console.log(hasSome)
     return hasSome;
 }
 
@@ -248,12 +236,13 @@ const desiredValue =
     // common.alphanumeric.reduceRight(common.square)
     ['oh'].reduceRight(common.sum)
 
-
 console.log('TESTED: ' + testedValue);
 console.log('SHOULD BE: ' + desiredValue);
 console.log('TESTED: ' + typeof testedValue);
 console.log('SHOULD BE: ' + typeof desiredValue);
 
+
+// TESTS' CONSOLES FOR ENTRIES
 // for (let e of testedValue) {
 //     console.log('TESTED: ' +  e);
 // }
