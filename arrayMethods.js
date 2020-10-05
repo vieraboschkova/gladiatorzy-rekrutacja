@@ -17,23 +17,21 @@ const common = require('./common')
 
 /* **** MAP **** */
 
-// changes empty slot to NaN
 function mapFn(arr, callback){
-    if (!Array.isArray(arr)) {          //check if array is actually an array
+    if (!Array.isArray(arr)) {                              //check if array is actually an array
         throw new TypeError('not a valid array');
-    }
-    if (typeof callback !== 'function') {   //check if function is type function
+    } else if (typeof callback !== 'function') {            // check if function is type function
       throw new TypeError(callback + ' is not a function');
-    } else if (arr === null) {              // if new array is null => return empty
+    } else if (arr === null) {                              // if new array is null => return empty
         return [];
     } else { 
-        const newArraysLength = 0;          // initiate new array
-        newArraysLength === arr.length;     // make new one as long as an original array
-        const mappedArray = new Array(newArraysLength); // initiate array with new mapped values
-        for (let i = 0; i < arr.length; i += 1) {       // for every item in array 
-            if (i in arr) { //if it isn't an empty item in array
-                mappedArray[i] = (callback(arr[i], i, arr)); // create a new item in mapped array changed by callback
-                }   
+        const newArraysLength = 0;                          // initiate new array
+        newArraysLength === arr.length;                     // make new one as long as an original array
+        const mappedArray = new Array(newArraysLength);     // initiate array for new mapped values
+        for (let i = 0; i < arr.length; i += 1) {           // for every item in array 
+            if (i in arr) {                                 // if it isn't an empty item in array
+                mappedArray[i] = (callback(arr[i], i, arr));// create a new item in mapped array changed by callback
+            }   
         }
     return mappedArray;
     }
@@ -42,43 +40,58 @@ function mapFn(arr, callback){
 /* **** FILTER **** */
 
 function filterFn(array, callback){
-    if (!Array.isArray(arr)) {              //check if array is actually an array
+    if (!Array.isArray(array)) {                            // check if array is actually an array
         throw new TypeError('not a valid array');
-    }
-    if (typeof callback !== 'function') {   //check if function is type function
+    } else if (typeof callback !== 'function') {            // check if function is type function
       throw new TypeError(callback + ' is not a function');
-    } else if (arr === null) {              // if new array is null => return empty
+    } else if (array === null) {                            // if new array is null => return empty
         return [];
     } else {
-        const newArray = []; 
-        for (let i = 0; i < array.length; i += 1) {
-            if(callback(array[i])) {
-                newArray.push(array[i]);
+        const newArray = [];                                // initiate new array for values      
+        for (let i = 0; i < array.length; i += 1) {         // for every item in array
+            if(callback(array[i], i, array)) {              // if it isn't an empty item in array
+                newArray.push(array[i]);                    // push item to filtered array
             }
         }
+        return newArray;
     }
-    return newArray;
 }
 
 /* **** REDUCE **** */
 
 function reduceFn(array, callback, initial){
-    if (!Array.isArray(array)) {
+    console.log(array)
+    if (!Array.isArray(array)) {                            // check if array is actually an array
         throw new TypeError('not a valid array');
-    } else if (array.length === 0 && !initial) {
+    } else if (typeof callback !== 'function') {            // check if function is type function
+      throw new TypeError(callback + ' is not a function');
+    } else if (array.length === 0 && initial === undefined) {            // if called on an empty array without an initialValue
         throw new TypeError('Reduce of empty array with no initial value');
     } else {
-        const newArray = array.slice(0);
-        if (initial) {
-            newArray.unshift(initial);
+        const arrLen = array.length;                        // get arrays length
+        let i = 0;                                          // initiate index position
+        let value;                                          // initiate value to be returned after reduce
+
+        if (arguments.length >= 3) {                        // if initial argument exists
+            value = initial;                                // first value of accumulator is the given initial
+            console.log('had initial: ' + value)
+        } else {                                            // if no initial value
+            while (i < arrLen && !(i in array)) {           // while index smaller than array's length and item is empty
+                i += 1;                                     // look for next indexed item until not empty
+                console.log('changing the first accumulator: ' + i)
+            }
+            value = array[i];                               // value to start the reducer is the first non-empty
+            console.log('else from initial ' + i)           // increase index by one to get next value
+            i += 1;
         }
-        let value = newArray[0];
-        if (newArray.length === 1) {
-            return value;
-        }
-        for (let i = 1; i < newArray.length; i += 1) {
-            if (i in newArray){
-                value = callback(value, newArray[i], i, newArray);
+
+        for (i; i < arrLen; i += 1) {                       // for all other values from array except first
+            console.log('itiration: ' + i)
+            if (i in array){                                // if not empty
+                console.log('VALUE before callback: ' + value)
+                console.log(array[i])
+                value = callback(value, array[i], i, array);// get new reduced value
+                console.log('VALUE after callback: ' + value)
             }
         }
         return value;
@@ -172,7 +185,7 @@ const testedValue =
     // mapFn(common.mixed, common.duplicate);
     // mapFn(common.emptyArray, common.duplicate);
     // mapFn(common.falsies, common.square)
-    mapFn(common.alphanumeric, common.falsies)
+    // mapFn(common.alphanumeric, common.falsies)
     // mapFn(1)
     // filterFn(common.numbers, common.biggerThanThree)
     // filterFn(common.emptyArray, common.biggerThanThree)
@@ -197,7 +210,7 @@ const testedValue =
     // reduceFn(common.mixed, common.sum)
     // reduceFn([ -1, 0, 1], common.sum)
     // reduceFn(common.falsies, common.sub)
-    // reduceFn(common.alphanumeric, common.square)
+    reduceFn(common.alphanumeric, common.square)
     // reduceFn(['oh'], common.sum)
         // reduceRightFn(common.numbers, common.sum, 100)
     // reduceRightFn(common.numbers, common.sum)
@@ -214,7 +227,7 @@ const desiredValue =
     // common.mixed.map(common.duplicate);
     // common.emptyArray.map(common.duplicate);
     // common.falsies.map(common.square)
-    common.alphanumeric(common.falsies)
+    // common.alphanumeric.map(common.falsies)
     // common.numbers.filter(common.biggerThanThree)
     // common.emptyArray.filter(common.biggerThanThree)
     // common.mixed.filter(((i) => i === false))
@@ -238,7 +251,7 @@ const desiredValue =
     // common.mixed.reduce(common.sum)
     // common.falsies.reduce(common.sub)
     // [ -1, 0, 1].reduce(common.sum)
-    // common.alphanumeric.reduce(common.square)
+    common.alphanumeric.reduce(common.square)
     // ['oh'].reduce(common.sum)
     // common.numbers.reduceRight(common.sum, 100)
     // common.numbers.reduceRight(common.sum)
@@ -250,7 +263,7 @@ const desiredValue =
     // common.alphanumeric.reduceRight(common.square)
     // ['oh'].reduceRight(common.sum)
 
-console.log('TESTED: ' + testedValue);
+console.log('TESTED:    ' + testedValue);
 console.log('SHOULD BE: ' + desiredValue);
 console.log('TESTED: ' + typeof testedValue);
 console.log('SHOULD BE: ' + typeof desiredValue);
