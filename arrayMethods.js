@@ -19,28 +19,38 @@ const common = require('./common')
 
 // changes empty slot to NaN
 function mapFn(arr, callback){
-    const newArraysLength = 0;
-    if (arr === null) {
-        newArraysLength = 0;
-    } else { newArraysLength === arr.length }
-    const mappedArray = new Array(newArraysLength);
-    if (!Array.isArray(arr)) {
+    if (!Array.isArray(arr)) {          //check if array is actually an array
         throw new TypeError('not a valid array');
-    } else {
-        for (let i = 0; i < arr.length; i += 1) {
-            mappedArray[i] = (callback(arr[i]));
-        }
     }
+    if (typeof callback !== 'function') {   //check if function is type function
+      throw new TypeError(callback + ' is not a function');
+    } else if (arr === null) {              // if new array is null => return empty
+        return [];
+    } else { 
+        const newArraysLength = 0;          // initiate new array
+        newArraysLength === arr.length;     // make new one as long as an original array
+        const mappedArray = new Array(newArraysLength); // initiate array with new mapped values
+        for (let i = 0; i < arr.length; i += 1) {       // for every item in array 
+            if (i in arr) {
+                mappedArray[i] = (callback(arr[i], i, arr)); // create a new item in mapped array changed by callback
+                }   
+        }
     return mappedArray;
+    }
 }
 
 /* **** FILTER **** */
 
 function filterFn(array, callback){
-    const newArray = [];
-    if (!Array.isArray(array)) {
+    if (!Array.isArray(arr)) {              //check if array is actually an array
         throw new TypeError('not a valid array');
+    }
+    if (typeof callback !== 'function') {   //check if function is type function
+      throw new TypeError(callback + ' is not a function');
+    } else if (arr === null) {              // if new array is null => return empty
+        return [];
     } else {
+        const newArray = []; 
         for (let i = 0; i < array.length; i += 1) {
             if(callback(array[i])) {
                 newArray.push(array[i]);
@@ -161,6 +171,8 @@ const testedValue =
     // mapFn(common.numbers, common.duplicate);
     // mapFn(common.mixed, common.duplicate);
     // mapFn(common.emptyArray, common.duplicate);
+    // mapFn(common.falsies, common.square)
+    mapFn(common.alphanumeric, common.falsies)
     // mapFn(1)
     // filterFn(common.numbers, common.biggerThanThree)
     // filterFn(common.emptyArray, common.biggerThanThree)
@@ -195,22 +207,24 @@ const testedValue =
     // reduceRightFn([ -1, 0, 1], common.sum)
     // reduceRightFn(common.falsies, common.sub)
     // reduceRightFn(common.alphanumeric, common.square)
-    reduceRightFn(['oh'], common.sum)
+    // reduceRightFn(['oh'], common.sum)
 
 const desiredValue = 
-    // common.numbers.map(duplicate);
-    // common.mixed.map(duplicate);
-    // common.emptyArray.map(duplicate);
-    // common.numbers.filter(biggerThanThree)
-    // common.emptyArray.filter(biggerThanThree)
+    // common.numbers.map(common.duplicate);
+    // common.mixed.map(common.duplicate);
+    // common.emptyArray.map(common.duplicate);
+    // common.falsies.map(common.square)
+    common.alphanumeric(common.falsies)
+    // common.numbers.filter(common.biggerThanThree)
+    // common.emptyArray.filter(common.biggerThanThree)
     // common.mixed.filter(((i) => i === false))
     // common.mixed.filter( common.smallerOrEqualToThree)
     // common.numbers.every( common.smallerOrEqualToThree)
-    // common.numbers.every(smallerThanTwenty)
-    // common.numbers.every(biggerThanThree)
-    // common.numbers.some(smallerThanTwenty)
-    // common.numbers.some(biggerThanTwenty)
-    // common.emptyArray.some(biggerThanTwenty)
+    // common.numbers.every(common.smallerThanTwenty)
+    // common.numbers.every(common.biggerThanThree)
+    // common.numbers.some(common.smallerThanTwenty)
+    // common.numbers.some(common.biggerThanTwenty)
+    // common.emptyArray.some(common.biggerThanTwenty)
     // common.mixed.some( common.smallerOrEqualToThree)
     // common.mixed.some(common.biggerThanTwenty)
     // common.numbers.entries()
@@ -234,7 +248,7 @@ const desiredValue =
     // common.falsies.reduceRight(common.sub)
     // [ -1, 0, 1].reduceRight(common.sum)
     // common.alphanumeric.reduceRight(common.square)
-    ['oh'].reduceRight(common.sum)
+    // ['oh'].reduceRight(common.sum)
 
 console.log('TESTED: ' + testedValue);
 console.log('SHOULD BE: ' + desiredValue);
