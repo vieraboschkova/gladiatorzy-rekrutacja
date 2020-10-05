@@ -31,7 +31,7 @@ function mapFn(arr, callback){
         newArraysLength === arr.length;     // make new one as long as an original array
         const mappedArray = new Array(newArraysLength); // initiate array with new mapped values
         for (let i = 0; i < arr.length; i += 1) {       // for every item in array 
-            if (i in arr) {
+            if (i in arr) { //if it isn't an empty item in array
                 mappedArray[i] = (callback(arr[i], i, arr)); // create a new item in mapped array changed by callback
                 }   
         }
