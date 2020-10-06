@@ -25,8 +25,7 @@ function mapFn(arr, callback){
     } else if (arr === null) {                              // if new array is null => return empty
         return [];
     } else { 
-        const newArraysLength = 0;                          // initiate new array
-        newArraysLength === arr.length;                     // make new one as long as an original array
+        const newArraysLength = arr.length;                 // initiate new array's length
         const mappedArray = new Array(newArraysLength);     // initiate array for new mapped values
         for (let i = 0; i < arr.length; i += 1) {           // for every item in array 
             if (i in arr) {                                 // if it isn't an empty item in array
@@ -49,7 +48,7 @@ function filterFn(array, callback){
     } else {
         const newArray = [];                                // initiate new array for values      
         for (let i = 0; i < array.length; i += 1) {         // for every item in array
-            if(callback(array[i], i, array)) {              // if it isn't an empty item in array
+            if(callback(array[i], i, array)) {              // if it is true after callback
                 newArray.push(array[i]);                    // push item to filtered array
             }
         }
@@ -65,7 +64,7 @@ function reduceFn(array, callback, initial){
         throw new TypeError('not a valid array');
     } else if (typeof callback !== 'function') {            // check if function is type function
       throw new TypeError(callback + ' is not a function');
-    } else if (array.length === 0 && initial === undefined) {            // if called on an empty array without an initialValue
+    } else if (array.length === 0 && initial === undefined) { // check if called on an empty array without an initialValue
         throw new TypeError('Reduce of empty array with no initial value');
     } else {
         const arrLen = array.length;                        // get arrays length
@@ -81,13 +80,13 @@ function reduceFn(array, callback, initial){
                 console.log('changing the first accumulator: ' + i)
             }
             value = array[i];                               // value to start the reducer is the first non-empty
-            console.log('else from initial ' + i)           // increase index by one to get next value
-            i += 1;
+            console.log('else from initial ' + i)           
+            i += 1;                                         // increase index by one to get next value for reducer
         }
 
-        for (i; i < arrLen; i += 1) {                       // for all other values from array except first
+        for (i; i < arrLen; i += 1) {                       // for all other values from array
             console.log('itiration: ' + i)
-            if (i in array){                                // if not empty
+            if (i in array){                                // if item not empty
                 console.log('VALUE before callback: ' + value)
                 console.log(array[i])
                 value = callback(value, array[i], i, array);// get new reduced value
@@ -101,22 +100,38 @@ function reduceFn(array, callback, initial){
 /* **** REDUCERIGHT **** */
 
 function reduceRightFn(array, callback, initial){
-    if (!Array.isArray(array)) {
+    console.log(array)
+    if (!Array.isArray(array)) {                            // check if array is actually an array
         throw new TypeError('not a valid array');
-    } else if (array.length === 0 && !initial) {
+    } else if (typeof callback !== 'function') {            // check if function is type function
+      throw new TypeError(callback + ' is not a function');
+    } else if (array.length === 0 && initial === undefined) { // check if called on an empty array without an initialValue
         throw new TypeError('Reduce of empty array with no initial value');
     } else {
-        const newArray = array.slice(0);
-        if (initial) {
-            newArray.push(initial);
+        const arrLen = array.length;                        // get arrays length
+        let i = arrLen - 1;                                 // initiate index to the last position
+        let value;                                          // initiate value to be returned after reduce
+
+        if (arguments.length >= 3) {                        // if "initial" argument exists
+            value = initial;                                // first value of accumulator is the given initial
+            console.log('had initial: ' + value)
+        } else {                                            // if no initial value
+            while (i >= 0 && !(i in array)) {               // while index bigger than array's zero and item is empty
+                i -= 1;                                     // look for previous indexed item until not empty
+                console.log('changing the first accumulator: ' + i)
+            }
+            value = array[i];                               // value to start the reducer is the first found non-empty
+            console.log('else from initial ' + i)           
+            i -= 1;                                         // decrease index by one to get next value for reducer
         }
-        let value = newArray[newArray.length - 1];
-        if (newArray.length === 1) {
-            return value;
-        }
-        for (let i = newArray.length - 2; i > -1; i -= 1) {
-            if (i in newArray){
-                value = callback(value, newArray[i], i, newArray);
+
+        for (i; i >= 0; i -= 1) {                           // for all other values from array from the end
+            console.log('itiration: ' + i)
+            if (i in array){                                // if item not empty
+                console.log('VALUE before callback: ' + value)
+                console.log(array[i])
+                value = callback(value, array[i], i, array);// get new reduced value
+                console.log('VALUE after callback: ' + value)
             }
         }
         return value;
@@ -210,7 +225,7 @@ const testedValue =
     // reduceFn(common.mixed, common.sum)
     // reduceFn([ -1, 0, 1], common.sum)
     // reduceFn(common.falsies, common.sub)
-    reduceFn(common.alphanumeric, common.square)
+    // reduceFn(common.alphanumeric, common.square)
     // reduceFn(['oh'], common.sum)
         // reduceRightFn(common.numbers, common.sum, 100)
     // reduceRightFn(common.numbers, common.sum)
@@ -220,7 +235,7 @@ const testedValue =
     // reduceRightFn([ -1, 0, 1], common.sum)
     // reduceRightFn(common.falsies, common.sub)
     // reduceRightFn(common.alphanumeric, common.square)
-    // reduceRightFn(['oh'], common.sum)
+    reduceRightFn(['oh'], common.sum)
 
 const desiredValue = 
     // common.numbers.map(common.duplicate);
@@ -251,7 +266,7 @@ const desiredValue =
     // common.mixed.reduce(common.sum)
     // common.falsies.reduce(common.sub)
     // [ -1, 0, 1].reduce(common.sum)
-    common.alphanumeric.reduce(common.square)
+    // common.alphanumeric.reduce(common.square)
     // ['oh'].reduce(common.sum)
     // common.numbers.reduceRight(common.sum, 100)
     // common.numbers.reduceRight(common.sum)
@@ -261,7 +276,7 @@ const desiredValue =
     // common.falsies.reduceRight(common.sub)
     // [ -1, 0, 1].reduceRight(common.sum)
     // common.alphanumeric.reduceRight(common.square)
-    // ['oh'].reduceRight(common.sum)
+    ['oh'].reduceRight(common.sum)
 
 console.log('TESTED:    ' + testedValue);
 console.log('SHOULD BE: ' + desiredValue);
