@@ -207,18 +207,17 @@ function someFn(array, callback){
     } else if (array.length === 0) {                        // check if called on an empty array
         return false;                                       // return false
     } else {
-        let hasAtLeastOne = false;
-        for (let i = 0; i < array.length; i += 1) {
-            if (i in array) {
+        let hasAtLeastOne = false;                          // initiate return value
+        for (let i = 0; i < array.length; i += 1) {         // for every item in array
+            if (i in array) {                               // if it isn't empty
                 console.log('iterated: ' + i + hasAtLeastOne)
-                if (callback(array[i], i, array)) {
-                    hasAtLeastOne = true;
+                if (callback(array[i], i, array)) {         // if value after callback is true
+                    hasAtLeastOne = true;                   // set return value to true
                     console.log('iterated: ' + i + hasAtLeastOne)
                     // break;
                     // return true;
                     return hasAtLeastOne;
                 }
-                
             }
         }
         return hasAtLeastOne;
@@ -228,16 +227,16 @@ function someFn(array, callback){
 /* **** ENTRIES **** */
 
 function entriesFn(array){
-    if (!Array.isArray(array)) {
+    if (!Array.isArray(array)) {                        // check if array is actually an array
         throw new TypeError('not a valid array');
     } else {
-        let newArray = new Array(array.length);
-        const keys = [...array.keys()];
-        const values = [...array.values()];
-        for (i in keys) {
-            newArray[i] = [keys[i], values[i]];
+        let newArray = new Array(array.length);         // initiate new array with the same length
+        const keys = [...array.keys()];                 // create an array "keys" with arrray's keys
+        const values = [...array.values()];             // create an array "values" with arrray's values
+        for (i in keys) {                               // for every item in the array
+            newArray[i] = [keys[i], values[i]];         // set value at current index as a key/ value pair
         }
-        return newArray;
+        return newArray;                                // return array of pairs
     }
 }
 
