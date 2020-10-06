@@ -161,41 +161,68 @@ function everyFn(array, callback) {
     } else if (array.length === 0) {                        // check if called on an empty array
         return true;                                        // return true
     } else {
-        const arrLen = array.length;
-        let isEvery = true;
-        let i = 0;
+        console.log(array)
+        const arrLen = array.length;                        // set lenght value
+        let isEvery = true;                                 // set return value to default true
+        let i = 0;                                          // set the first index to iterate
 
-        while (i < arrLen) {
-            
-        }
-        // for (let i = 0; i < array.length; i += 1) {
-        //     if (!(i in array)) {
-        //     } else if(!callback(array[i])) {
-        //         isEvery = false;
-        //         i = array.length - 1;
+        /* WHILE */
+        // while (i < arrLen) {                                // as long as index smaller than arrays length
+        //     if (i in array) {                               // if it is not empty
+        //         if(!callback(array[i], i, array)) {         // if value returned by callback is false
+        //             isEvery = false;                        // set return value to false and
+        //             console.log('iterated: ' + i + isEvery)
+        //             return isEvery;                         // return it
+        //         } else {
+        //             console.log('iterated: ' + i + isEvery)
+        //         }
         //     }
+        //     i += 1;                                         // if the value returned by callback is true, get next item
         // }
+
+        /* FOR LOOP */
+        for (let i = 0; i < arrLen; i += 1) {                   // for all indexes smaller than array's length
+        console.log('iterated: ' + i + isEvery)
+            if (i in array) {                                   // if i not empty
+                if(!callback(array[i], i, array)) {             // if value returned by callback is false
+                    isEvery = false;  
+                    console.log('stopping: ' + i + isEvery)                          // set return value to false and
+                    return isEvery;                             // return false
+                }
+            console.log('iterated: ' + i + isEvery)
+            }
+        }
         return isEvery;
     }
-    
 }
 
 /* **** SOME **** */
 
 function someFn(array, callback){
-    let hasSome = false;
-    if (!Array.isArray(array)) {
+    console.log(array)
+    if (!Array.isArray(array)) {                            // check if array is actually an array
         throw new TypeError('not a valid array');
+    } else if (typeof callback !== 'function') {            // check if function is type function
+        throw new TypeError(callback + ' is not a function');
+    } else if (array.length === 0) {                        // check if called on an empty array
+        return false;                                       // return false
     } else {
+        let hasAtLeastOne = false;
         for (let i = 0; i < array.length; i += 1) {
-            if (!(i in array)) {
-            } else if(callback(array[i])) {
-                hasSome = true;
-                i = array.length - 1;
+            if (i in array) {
+                console.log('iterated: ' + i + hasAtLeastOne)
+                if (callback(array[i], i, array)) {
+                    hasAtLeastOne = true;
+                    console.log('iterated: ' + i + hasAtLeastOne)
+                    // break;
+                    // return true;
+                    return hasAtLeastOne;
+                }
+                
             }
         }
+        return hasAtLeastOne;
     }
-    return hasSome;
 }
 
 /* **** ENTRIES **** */
@@ -230,7 +257,7 @@ const testedValue =
     // filterFn(common.emptyArray, common.biggerThanThree)
     // filterFn(common.mixed, ((i) => i === false))
     // filterFn(common.mixed,  common.smallerOrEqualToThree)
-    everyFn(common.numbers,  common.smallerOrEqualToThree)
+    // everyFn(common.numbers,  common.smallerOrEqualToThree)
     // everyFn(common.numbers, common.smallerThanTwenty)
     // everyFn(common.numbers, common.biggerThanThree)
     // someFn(common.numbers, common.smallerThanTwenty)
@@ -238,7 +265,9 @@ const testedValue =
     // someFn(common.emptyArray, common.biggerThanTwenty)
     // someFn(common.mixed,  common.smallerOrEqualToThree)
     // someFn(common.mixed, common.biggerThanTwenty)
-    // entriesFn(common.numbers)
+    // someFn(common.alphanumeric, common.biggerThanThree)
+    // someFn(common.alphanumeric, common.biggerThanTwenty)
+    entriesFn(common.numbers)
     // entriesFn(common.emptyArray)
     // entriesFn(common.mixed)
     // entriesFn(common.falsies)
@@ -271,7 +300,7 @@ const desiredValue =
     // common.emptyArray.filter(common.biggerThanThree)
     // common.mixed.filter(((i) => i === false))
     // common.mixed.filter( common.smallerOrEqualToThree)
-    common.numbers.every( common.smallerOrEqualToThree)
+    // common.numbers.every( common.smallerOrEqualToThree)
     // common.numbers.every(common.smallerThanTwenty)
     // common.numbers.every(common.biggerThanThree)
     // common.numbers.some(common.smallerThanTwenty)
@@ -279,7 +308,9 @@ const desiredValue =
     // common.emptyArray.some(common.biggerThanTwenty)
     // common.mixed.some( common.smallerOrEqualToThree)
     // common.mixed.some(common.biggerThanTwenty)
-    // common.numbers.entries()
+    // common.alphanumeric.some(common.biggerThanThree)
+    // common.alphanumeric.some(common.biggerThanTwenty)
+    common.numbers.entries()
     // common.emptyArray.entries()
     // common.mixed.entries()
     // common.falsies.entries()
@@ -302,17 +333,17 @@ const desiredValue =
     // common.alphanumeric.reduceRight(common.square)
     // ['oh'].reduceRight(common.sum)
 
-console.log('TESTED:    ' + testedValue);
-console.log('SHOULD BE: ' + desiredValue);
+// console.log('TESTED:    ' + testedValue);
+// console.log('SHOULD BE: ' + desiredValue);
 console.log('TESTED: ' + typeof testedValue);
 console.log('SHOULD BE: ' + typeof desiredValue);
 
 
 // TESTS' CONSOLES FOR ENTRIES
-// for (let e of testedValue) {
-//     console.log('TESTED: ' +  e);
-// }
+for (let e of testedValue) {
+    console.log('TESTED: ' +  e);
+}
 
-// for (let e of desiredValue) {
-//     console.log('SHOULD BE: ' + e)
-// }
+for (let e of desiredValue) {
+    console.log('SHOULD BE: ' + e)
+}
