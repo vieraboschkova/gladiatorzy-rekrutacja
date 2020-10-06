@@ -120,7 +120,7 @@ function reduceRightFn(array, callback, initial){
     }
     
     /* ***** STEP BY STEP SOLUTION ***** */
-    
+
     // if (!Array.isArray(array)) {                            // check if array is actually an array
     //     throw new TypeError('not a valid array');
     // } else if (typeof callback !== 'function') {            // check if function is type function
@@ -154,19 +154,30 @@ function reduceRightFn(array, callback, initial){
 /* **** EVERY **** */
 
 function everyFn(array, callback) {
-    let isEvery = true;
-    if (!Array.isArray(array)) {
+    if (!Array.isArray(array)) {                            // check if array is actually an array
         throw new TypeError('not a valid array');
+    } else if (typeof callback !== 'function') {            // check if function is type function
+        throw new TypeError(callback + ' is not a function');
+    } else if (array.length === 0) {                        // check if called on an empty array
+        return true;                                        // return true
     } else {
-        for (let i = 0; i < array.length; i += 1) {
-            if (!(i in array)) {
-            } else if(!callback(array[i])) {
-                isEvery = false;
-                i = array.length - 1;
-            }
+        const arrLen = array.length;
+        let isEvery = true;
+        let i = 0;
+
+        while (i < arrLen) {
+            
         }
+        // for (let i = 0; i < array.length; i += 1) {
+        //     if (!(i in array)) {
+        //     } else if(!callback(array[i])) {
+        //         isEvery = false;
+        //         i = array.length - 1;
+        //     }
+        // }
+        return isEvery;
     }
-    return isEvery;
+    
 }
 
 /* **** SOME **** */
@@ -219,7 +230,7 @@ const testedValue =
     // filterFn(common.emptyArray, common.biggerThanThree)
     // filterFn(common.mixed, ((i) => i === false))
     // filterFn(common.mixed,  common.smallerOrEqualToThree)
-    // everyFn(common.numbers,  common.smallerOrEqualToThree)
+    everyFn(common.numbers,  common.smallerOrEqualToThree)
     // everyFn(common.numbers, common.smallerThanTwenty)
     // everyFn(common.numbers, common.biggerThanThree)
     // someFn(common.numbers, common.smallerThanTwenty)
@@ -247,7 +258,7 @@ const testedValue =
     // reduceRightFn(common.mixed, common.sum)
     // reduceRightFn([ -1, 0, 1], common.sum)
     // reduceRightFn(common.falsies, common.sub)
-    reduceRightFn(common.alphanumeric, common.square)
+    // reduceRightFn(common.alphanumeric, common.square)
     // reduceRightFn(['oh'], common.sum)
 
 const desiredValue = 
@@ -260,7 +271,7 @@ const desiredValue =
     // common.emptyArray.filter(common.biggerThanThree)
     // common.mixed.filter(((i) => i === false))
     // common.mixed.filter( common.smallerOrEqualToThree)
-    // common.numbers.every( common.smallerOrEqualToThree)
+    common.numbers.every( common.smallerOrEqualToThree)
     // common.numbers.every(common.smallerThanTwenty)
     // common.numbers.every(common.biggerThanThree)
     // common.numbers.some(common.smallerThanTwenty)
@@ -288,7 +299,7 @@ const desiredValue =
     // common.mixed.reduceRight(common.sum)
     // common.falsies.reduceRight(common.sub)
     // [ -1, 0, 1].reduceRight(common.sum)
-    common.alphanumeric.reduceRight(common.square)
+    // common.alphanumeric.reduceRight(common.square)
     // ['oh'].reduceRight(common.sum)
 
 console.log('TESTED:    ' + testedValue);
