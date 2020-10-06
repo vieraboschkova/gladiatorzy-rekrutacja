@@ -21,7 +21,7 @@ function mapFn(arr, callback){
     if (!Array.isArray(arr)) {                              //check if array is actually an array
         throw new TypeError('not a valid array');
     } else if (typeof callback !== 'function') {            // check if function is type function
-      throw new TypeError(callback + ' is not a function');
+        throw new TypeError(callback + ' is not a function');
     } else if (arr === null) {                              // if new array is null => return empty
         return [];
     } else { 
@@ -42,7 +42,7 @@ function filterFn(array, callback){
     if (!Array.isArray(array)) {                            // check if array is actually an array
         throw new TypeError('not a valid array');
     } else if (typeof callback !== 'function') {            // check if function is type function
-      throw new TypeError(callback + ' is not a function');
+        throw new TypeError(callback + ' is not a function');
     } else if (array === null) {                            // if new array is null => return empty
         return [];
     } else {
@@ -59,11 +59,10 @@ function filterFn(array, callback){
 /* **** REDUCE **** */
 
 function reduceFn(array, callback, initial){
-    console.log(array)
     if (!Array.isArray(array)) {                            // check if array is actually an array
         throw new TypeError('not a valid array');
     } else if (typeof callback !== 'function') {            // check if function is type function
-      throw new TypeError(callback + ' is not a function');
+        throw new TypeError(callback + ' is not a function');
     } else if (array.length === 0 && initial === undefined) { // check if called on an empty array without an initialValue
         throw new TypeError('Reduce of empty array with no initial value');
     } else {
@@ -73,24 +72,17 @@ function reduceFn(array, callback, initial){
 
         if (arguments.length >= 3) {                        // if initial argument exists
             value = initial;                                // first value of accumulator is the given initial
-            console.log('had initial: ' + value)
         } else {                                            // if no initial value
             while (i < arrLen && !(i in array)) {           // while index smaller than array's length and item is empty
                 i += 1;                                     // look for next indexed item until not empty
-                console.log('changing the first accumulator: ' + i)
             }
             value = array[i];                               // value to start the reducer is the first non-empty
-            console.log('else from initial ' + i)           
             i += 1;                                         // increase index by one to get next value for reducer
         }
 
         for (i; i < arrLen; i += 1) {                       // for all other values from array
-            console.log('itiration: ' + i)
             if (i in array){                                // if item not empty
-                console.log('VALUE before callback: ' + value)
-                console.log(array[i])
                 value = callback(value, array[i], i, array);// get new reduced value
-                console.log('VALUE after callback: ' + value)
             }
         }
         return value;
@@ -103,23 +95,19 @@ function reduceRightFn(array, callback, initial){
     if (!Array.isArray(array)) {                            // check if array is actually an array
         throw new TypeError('not a valid array');
     } else if (typeof callback !== 'function') {            // check if function is type function
-      throw new TypeError(callback + ' is not a function');
+        throw new TypeError(callback + ' is not a function');
     } else if (array.length === 0 && initial === undefined) { // check if called on an empty array without an initialValue
         throw new TypeError('Reduce of empty array with no initial value');
     } else {
-    // needs a method to reverse the array without mutating original
-    // let newArray = [...array].reverse(); // changes empty items to undefined
-    // OR
         let newArray = array.slice().reverse();             // create new array with reversed values
-        console.log(newArray)
         if (initial !== undefined) {                        // if there is an initial value,
-            return reduceFn(newArray, callback, initial);   // call reduceFn 
+            return reduceFn(newArray, callback, initial);   // call reduceFn with three arguments
         } else {
             return reduceFn(newArray, callback);            // else, call reduceFn without initial
         }
     }
     
-    /* ***** STEP BY STEP SOLUTION ***** */
+    /* ***** REDUCE RIGHT STEP BY STEP SOLUTION ***** */
 
     // if (!Array.isArray(array)) {                            // check if array is actually an array
     //     throw new TypeError('not a valid array');
@@ -161,7 +149,6 @@ function everyFn(array, callback) {
     } else if (array.length === 0) {                        // check if called on an empty array
         return true;                                        // return true
     } else {
-        console.log(array)
         const arrLen = array.length;                        // set lenght value
         let isEvery = true;                                 // set return value to default true
         let i = 0;                                          // set the first index to iterate
@@ -171,10 +158,7 @@ function everyFn(array, callback) {
         //     if (i in array) {                               // if it is not empty
         //         if(!callback(array[i], i, array)) {         // if value returned by callback is false
         //             isEvery = false;                        // set return value to false and
-        //             console.log('iterated: ' + i + isEvery)
         //             return isEvery;                         // return it
-        //         } else {
-        //             console.log('iterated: ' + i + isEvery)
         //         }
         //     }
         //     i += 1;                                         // if the value returned by callback is true, get next item
@@ -182,14 +166,11 @@ function everyFn(array, callback) {
 
         /* FOR LOOP */
         for (let i = 0; i < arrLen; i += 1) {                   // for all indexes smaller than array's length
-        console.log('iterated: ' + i + isEvery)
             if (i in array) {                                   // if i not empty
                 if(!callback(array[i], i, array)) {             // if value returned by callback is false
                     isEvery = false;  
-                    console.log('stopping: ' + i + isEvery)                          // set return value to false and
                     return isEvery;                             // return false
                 }
-            console.log('iterated: ' + i + isEvery)
             }
         }
         return isEvery;
@@ -199,7 +180,6 @@ function everyFn(array, callback) {
 /* **** SOME **** */
 
 function someFn(array, callback){
-    console.log(array)
     if (!Array.isArray(array)) {                            // check if array is actually an array
         throw new TypeError('not a valid array');
     } else if (typeof callback !== 'function') {            // check if function is type function
@@ -210,12 +190,8 @@ function someFn(array, callback){
         let hasAtLeastOne = false;                          // initiate return value
         for (let i = 0; i < array.length; i += 1) {         // for every item in array
             if (i in array) {                               // if it isn't empty
-                console.log('iterated: ' + i + hasAtLeastOne)
                 if (callback(array[i], i, array)) {         // if value after callback is true
                     hasAtLeastOne = true;                   // set return value to true
-                    console.log('iterated: ' + i + hasAtLeastOne)
-                    // break;
-                    // return true;
                     return hasAtLeastOne;
                 }
             }
