@@ -7,9 +7,10 @@ function sub(a, b) {
 }
 
 const biggerThanThree = function (x) {
-    if (x  > 3) {
+    if (x > 3) {
         return true;
     }
+    return false;
 }
 
 const smallerThanTwenty = function (x) {
@@ -43,6 +44,9 @@ function hasEmptyElement(array){
     return false;
 }
 
+const clone = items =>
+  items.map(item => (Array.isArray(item) ? clone(item) : item));
+
 const duplicate = (a) =>  2 * a ;
 const numbers = [,-5, -3, , 1, 5, 6, 7, 6, 2, 0];
 const mixed = [ -1, 0, 1, '', true, null, NaN, undefined, {a:2, b:3}]
@@ -60,6 +64,7 @@ module.exports =  {
     duplicate,
     square,
     hasEmptyElement,
+    clone,
     numbers, 
     emptyArray,
     mixed,
