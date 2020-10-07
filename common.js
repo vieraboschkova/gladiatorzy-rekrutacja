@@ -48,6 +48,7 @@ const clone = items =>
   items.map(item => (Array.isArray(item) ? clone(item) : item));
 
 const duplicate = (a) =>  2 * a ;
+const lengthOfItem = (a) => a.length;
 const numbers = [,-5, -3, , 1, 5, 6, 7, 6, 2, 0];
 const mixed = [ -1, 0, 1, '', true, null, NaN, undefined, {a:2, b:3}]
 const emptyArray = [];
@@ -62,6 +63,7 @@ module.exports =  {
     smallerThanTwenty,
     biggerThanTwenty,
     duplicate,
+    lengthOfItem,
     square,
     hasEmptyElement,
     clone,
