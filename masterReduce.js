@@ -1,4 +1,3 @@
-const { smallerThanTwenty } = require('./common');
 // za pomocą metody .reduce wbudowanej w array 
 // odtwórz działanie innych metod:
 
