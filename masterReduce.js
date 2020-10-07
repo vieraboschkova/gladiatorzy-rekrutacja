@@ -22,14 +22,10 @@ function customArraySome (arr, callback) {
         return false;                                               // return false
     } else {
         const newArray = common.clone(arr);                         // clone array without reference
-        console.log(newArray)    
         return newArray.reduce((accumulator, currentValue, index, newArray) => { // start reduce function
-            console.log(currentValue + ":" + index)
             if (callback(currentValue, index, newArray) || callback(accumulator, index, newArray)) { 
                                                                     // if accumulator or current value evaluated by callback is true
-                console.log(accumulator + ' :acc: cur: ' + currentValue + ":at:" + index)
                 newArray.length = index;                            // shorten itirated array to stop reduce
-                console.log(newArray)
                 return true;                                        // some returns true
             }
             return false;                                           // if no true values found, returns false
@@ -50,15 +46,11 @@ function customArrayEvery (arr, callback) {
     } else {
         // const newArray = [...arr];
         const newArray = common.clone(arr);                         // clone array without reference
-        console.log(newArray)
         return newArray.reduce((accumulator, currentValue, index, newArray) => { // start reduce function
-            console.log(currentValue + ":" + index)
             if (index in newArray) {
                 if ((!callback(currentValue, index, newArray)) || (!callback(accumulator, index, newArray))) { 
                                                                     // if accumulator or current value evaluated by callback is false
-                    console.log(currentValue + " : was false at index: " + index)
                     newArray.length = index;                        // shorten itirated array to stop reduce
-                    console.log(newArray)
                     return false;                                   // every returns false
                 }
             }
@@ -80,7 +72,6 @@ function customArrayFilter(arr, callback) {
     } else {
         return arr.reduce((accumulator, currentValue, index, arr) => {  // start reduce function
             if (callback(currentValue, index, arr)) {               // if current value evaluated by callback is true
-                console.log(currentValue + " :filtered: " + index)
                 return [...accumulator, currentValue];              // add current value to accumulator array
             }
             return accumulator;                                     // return accumulator array with values that evaluated to true
@@ -99,7 +90,7 @@ function customArrayMap(arr, callback) {
         return [];
     } else {
         return arr.reduce((accumulator, currentValue, index, arr) => {      // start reduce function
-            if (index in arr){                                      // if item is not empty (ignores empty items)
+            if (index in arr) {                                     // if item is not empty (ignores empty items)
                 accumulator[index] = (callback(currentValue, index, arr));  // at this index put the value returned by callback
             }
             return accumulator;                                     // return new array with mapped values
